@@ -41,7 +41,7 @@ class RedirectIfAuthenticated
                         'message' => 'Berhasil, anda login sebagai member!',
                         'alert-type' => 'success'
                     );
-                    return redirect()->route('member.dashboard')->with($notification2);;
+                    return redirect()->route('presenter.dashboard')->with($notification2);;
                 } else {
                     Auth::logout();
                     $notification = array(

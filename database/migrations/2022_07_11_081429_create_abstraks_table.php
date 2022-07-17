@@ -21,6 +21,10 @@ class CreateAbstraksTable extends Migration
             $table->string('file_abstrak');
             $table->enum('status',['pending','diteruskan','disetujui','ditolak']);
             $table->integer('tahun_usulan');
+            $table->string('file_paper')->nullable();
+            $table->string('file_presentasi')->nullable();
+            $table->enum('status_file',['dikirim','disetujui','revisi'])->nullable();
+            $table->text('komentar_revisi')->nullable();
             $table->timestamps();
         });
     }

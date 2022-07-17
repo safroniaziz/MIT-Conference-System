@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-  	<title>Login 07</title>
+  	<title>Login Form</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -22,50 +22,51 @@
                         <div class="wrap d-md-flex">
                             <div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
                                 <div class="text w-100">
-                                    <h2>Selamat Datang </h2>
-                                    <img src="{{ asset('assets/images/logo.png') }}" alt="" style="width:250px;">
-                                    <h2 class="mt-3" style="font-size:20px;">MIT CONFERENCE SYSTEM </h2>
+                                    <p style="text-transform:uppercase; font-size:22px !important; font-weight:bold">welcome to <br> oceri submission system </p>
+                                        <img src="{{ asset('upload/logo/oceri.png') }}" alt="" style="width:150px;">
+                                        <br>
+                                        <br>
+                                        <p style="text-transform:uppercase; font-style: italic; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                                           <strong> <u>Don't have an acoount?</u> </strong><br>
+                                            Please Register Here
+                                        </p>
 
-                                    <p>Anda belum memiliki akun?</p>
+                                        <a href="{{ route('register') }}" style="margin-bottom:30px !important;" class="btn btn-white btn-outline-white">Register</a>
+                                        <br>
+                                        <img src="{{ asset('assets/images/logo.png') }}" alt="" style="width:100px;">
+                                        <br>
+                                        <p><strong>SUPPORT BY MIT CONFERENCE SYSTEM <br> CV.MEDIA INTI TEKNOLOGI</strong> </p>
 
-                                    <a href="{{ route('register') }}" class="btn btn-white btn-outline-white">Daftar Di Sini</a>
                                 </div>
                       </div>
                             <div class="login-wrap p-4 p-lg-5">
-                          <div class="d-flex">
-                              <div class="w-100">
-                                    <h3 class="mb-1">Sudah Memiliki Akun?</h3>
-                                    <p>Silahkan Masukan username dan password terdaftar</p>
-                              </div>
-
-                          </div>
+                                <div class="d-flex d-flex align-items-center order-md-last" style="margin-top:60px !important;">
+                                    <div class="w-100">
+                                            <h3 class="mb-1">Already Have an Account?</h3>
+                                            <p>Please enter the registered username and password</p>
+                                    </div>
+                                </div>
                                 <form action="{{ route('login') }}" method="post" class="signin-form">
                                     {{ csrf_field() }} {{ method_field('POST') }}
-                              <div class="form-group mb-3">
-                                  <label class="label" for="name">Username</label>
-                                  <input type="text" class="form-control" name="username" placeholder="Username" required>
-                              </div>
-                        <div class="form-group mb-3">
-                            <label class="label" for="password">Password</label>
-                          <input type="password" name="password" class="form-control" placeholder="Password" required>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
-                        </div>
-                        <div class="form-group d-md-flex">
-                            <div class="w-50 text-left">
-                                <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
-                                          <input type="checkbox" checked>
-                                          <span class="checkmark"></span>
-                                            </label>
+                                        <div class="form-group mb-3">
+                                            <label class="label" for="name">Username</label>
+                                            <input type="text" class="form-control" name="username" placeholder="Username" required>
                                         </div>
-                                        <div class="w-50 text-md-right">
-                                            <a href="#">Forgot Password</a>
-                                        </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="password">Password</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="form-control btn btn-primary" style="padding: 0px !important;">Log In</button>
+                                    </div>
+                                    <div class="form-group d-md-flex">
+                                    <div class="w-50 text-md-left">
+                                        <a href="#">Forgot Password</a>
+                                    </div>
+                                    </div>
+                                </form>
+                            </div>
+                </div>
                     </div>
                 </div>
             </div>

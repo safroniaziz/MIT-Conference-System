@@ -63,18 +63,18 @@ class LoginController extends Controller
                         'alert-type' => 'success'
                     );
                     return redirect()->route('administrator.dashboard')->with($notification1);;
-                }elseif (auth()->user()->access == "operator") {
+                }elseif (auth()->user()->access == "participant") {
                     $notification2 = array(
-                        'message' => 'Berhasil, akun login sebagai operator!',
+                        'message' => 'Berhasil, akun login sebagai participant!',
                         'alert-type' => 'success'
                     );
-                    return redirect()->route('operator.dashboard')->with($notification2);;
-                }elseif (auth()->user()->access == "member") {
+                    return redirect()->route('participant.dashboard')->with($notification2);;
+                }elseif (auth()->user()->access == "presenter") {
                     $notification2 = array(
-                        'message' => 'Berhasil, akun login sebagai member!',
+                        'message' => 'Berhasil, akun login sebagai presenter!',
                         'alert-type' => 'success'
                     );
-                    return redirect()->route('member.dashboard')->with($notification2);;
+                    return redirect()->route('presenter.dashboard')->with($notification2);;
                 }else {
                     Auth::logout();
                     $notification = array(

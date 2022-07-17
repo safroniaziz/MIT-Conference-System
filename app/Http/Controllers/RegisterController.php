@@ -13,6 +13,8 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:255'],
             'full_name' => ['required', 'string', 'max:255'],
             'telephone' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string'],
+            'access' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
@@ -23,7 +25,8 @@ class RegisterController extends Controller
             'email' => $request['email'],
             'telephone' => $request['telephone'],
             'password' => Hash::make($request['password']),
-            'access' => 'member',
+            'access' => $request->access,
+            'address' => $request->address,
         ]);
 
         return redirect()->route('login');

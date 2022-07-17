@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddBuktiPembayaranColumnToAbstraksTable extends Migration
+class CreatePaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddBuktiPembayaranColumnToAbstraksTable extends Migration
      */
     public function up()
     {
-        Schema::table('abstraks', function (Blueprint $table) {
-            $table->string('proof_of_payment')->nullable();
+        Schema::create('payments', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('total');
+            $table->string('proof');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddBuktiPembayaranColumnToAbstraksTable extends Migration
      */
     public function down()
     {
-        Schema::table('abstraks', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('payments');
     }
 }
