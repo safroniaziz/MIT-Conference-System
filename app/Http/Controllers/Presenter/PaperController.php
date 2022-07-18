@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Presenter;
 use App\Http\Controllers\Controller;
 use App\Models\Abstrak;
 use App\Models\Paper;
+use App\Models\Pengaturan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -16,9 +17,13 @@ class PaperController extends Controller
             ['user_id',Auth::user()->id],
             ['proof_of_payment','!=',""],
             ['proof_of_payment','!=',null],
+            ['status_payment','!=',"pending"],
+            ['status_payment','!=',null],
         ])->get();
+        $setting = Pengaturan::where('id',1)->first();
         return view('presenter/paper.index',[
             'papers'  => $papers,
+            'setting' => $setting,
         ]);
     }
 

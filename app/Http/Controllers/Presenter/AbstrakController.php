@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Presenter;
 
 use App\Http\Controllers\Controller;
 use App\Models\Abstrak;
+use App\Models\Pengaturan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,10 @@ class AbstrakController extends Controller
 {
     public function index(){
         $abstraks = Abstrak::where('user_id',Auth::user()->id)->get();
+        $setting = Pengaturan::where('id',1)->first();
         return view('presenter/abstrak.index',[
             'abstraks'  => $abstraks,
+            'setting' => $setting
         ]);
     }
 
@@ -30,13 +33,18 @@ class AbstrakController extends Controller
     }
 
     public function add(){
-        return view('presenter/abstrak.add');
+        $setting = Pengaturan::where('id',1)->first();
+        return view('presenter/abstrak.add',[
+            'setting'   => $setting
+        ]);
     }
 
     public function edit($id){
         $abstrak = Abstrak::find($id);
+        $setting = Pengaturan::where('id',1)->first();
         return view('presenter/abstrak.edit',[
-            'abstrak' => $abstrak
+            'abstrak' => $abstrak,
+            'setting'   => $setting
         ]);
     }
 
@@ -70,6 +78,7 @@ class AbstrakController extends Controller
             'abstrak'        =>  $request->abstrak,
             'file_abstrak'   =>  $model['file_abstrak'],
             'status'         =>  'pending',
+            'status_file'         =>  'pending',
             'user_id'        =>  Auth::user()->id,
         ]);
 
@@ -149,12 +158,24 @@ class AbstrakController extends Controller
         }
         Abstrak::where('id',$request->id_kirim)->update([
             'proof_of_payment'   =>  $model['proof_of_payment'],
+            'status_payment'    =>  'pending',
         ]);
 
         $notification = array(
             'message' => 'Berhasil, bukti pembayaran berhasil dikirim!',
             'alert-type' => 'success'
         );
-        return redirect()->route('presenter.abstrak')->with($notification);
+        return redirect()->route('presenter.payment')->with($notification);
+    }
+
+    public function paymentUsulkan($id){
+        $abstrak = Abstrak::find($id);
+        $abstrak->status_payment = "dikirim";
+        $abstrak->update();
+        $notification = array(
+            'message' => 'Berhasil, proof of payment successfull sent!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('presenter.payment')->with($notification);
     }
 }

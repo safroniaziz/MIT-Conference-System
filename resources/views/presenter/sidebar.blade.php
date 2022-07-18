@@ -11,6 +11,12 @@
     </a>
 </li>
 
+<li class="{{ set_active('presenter.payment') }}">
+    <a href="{{ route('presenter.payment') }}">
+        <i class="fa fa-credit-card"></i> <span>Proof Of Payment</span>
+    </a>
+</li>
+
 <li class="{{ set_active('presenter.paper') }}">
     <a href="{{ route('presenter.paper') }}">
         <i class="fa fa-file-powerpoint-o"></i> <span>Full Paper & Presentation</span>

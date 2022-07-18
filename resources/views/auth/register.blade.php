@@ -1,4 +1,6 @@
-
+@php
+    use App\Models\Pengaturan;
+@endphp
 <!doctype html>
 <html lang="en">
   <head>
@@ -24,9 +26,12 @@
 					<div class="wrap d-md-flex">
 						<div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
 							<div class="text w-100">
-                                <p style="text-transform:uppercase; font-size:22px !important; font-weight:bold">welcome to <br> oceri submission system </p>
-                                    <img src="{{ asset('upload/logo/oceri.png') }}" alt="" style="width:150px;">
-                                    <br>
+                                @php
+                                    $setting = Pengaturan::where('id',1)->first();
+                                @endphp
+                                <p style="text-transform:uppercase; font-size:22px !important; font-weight:bold">welcome to <br> {{ $setting->nama_app }} </p>
+                                <img src="{{ asset('upload/aplication_logo/'.$setting->logo_app) }}" alt="" style="width:150px;">
+                                <br>
                                     <br>
                                     <p style="text-transform:uppercase; font-style: italic; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
                                        <strong> <u>Already have an acoount?</u> </strong><br>

@@ -5,7 +5,30 @@
     </a>
 </li>
 
-<li class="header" style="font-weight:bold;">SETTINGS</li>
+<li class="{{ set_active('administrator.abs_verif') }}">
+    <a href="{{ route('administrator.abs_verif') }}">
+        <i class="fa fa-check-circle"></i> <span>Abstract Verification</span>
+    </a>
+</li>
+
+<li class="{{ set_active('administrator.payment') }}">
+    <a href="{{ route('administrator.payment') }}">
+        <i class="fa fa-credit-card"></i> <span>Payment Proof Verification</span>
+    </a>
+</li>
+
+<li class="{{ set_active('administrator.proof') }}">
+    <a href="{{ route('administrator.proof') }}">
+        <i class="fa fa-newspaper-o"></i> <span>All Payment Proof List</span>
+    </a>
+</li>
+
+<li class="{{ set_active('administrator.all') }}">
+    <a href="{{ route('administrator.all') }}">
+        <i class="fa fa-newspaper-o"></i> <span>All Abstract List</span>
+    </a>
+</li>
+
 <li class="{{ set_active('administrator.settings') }}">
     <a href="{{ route('administrator.settings') }}">
         <i class="fa fa-cog"></i> <span>Settings</span>

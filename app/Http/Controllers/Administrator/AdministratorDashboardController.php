@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Abstrak;
+use App\Models\Pengaturan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class AdministratorDashboardController extends Controller
         $ditolak = count(Abstrak::where('status','ditolak')->get());
         $presenter = count(User::where('access','presenter')->get());
         $participant = count(User::where('access','participant')->get());
+        $setting = Pengaturan::where('id',1)->first();
         return view('administrator/dashboard',[
             'log_login' =>  $log_login,
             'abstrak'   => $abstrak,
@@ -34,6 +36,7 @@ class AdministratorDashboardController extends Controller
             'ditolak'   => $ditolak,
             'presenter'   => $presenter,
             'participant'   => $participant,
+            'setting' => $setting,
         ]);
     }
 }

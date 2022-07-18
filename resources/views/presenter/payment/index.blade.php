@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('location','Dashboard')
 @section('location2')
-    <i class="fa fa-home"></i>&nbsp;Upload Full Paper & Presentation File</i>
+    <i class="fa fa-home"></i>&nbsp;Proof Of Payment</i>
 @endsection
 @section('user-login')
     @if (Auth::check())
@@ -12,7 +12,7 @@
     Presenter
 @endsection
 @section('content-title')
-    Dashboard
+    Payment
     <small>{{ $setting->nama_app }}</small>
 @endsection
 @section('page')
@@ -58,7 +58,7 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-paper-plane"></i>&nbsp;Upload Full Paper & Presentation File </h3>
+                <h3 class="box-title"><i class="fa fa-paper-plane"></i>&nbsp;Proof Of Payment</h3>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -82,11 +82,9 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Abstract Title</th>
-                                    <th>Paper File</th>
-                                    <th>Presention File</th>
-                                    <th>Paper & Presention Status </th>
-                                    <th>Send File</th>
-                                    <th>Comment</th>
+                                    <th style="text-align:center">Payment File</th>
+                                    <th style="text-align:center">Payment Status </th>
+                                    <th style="text-align:center">Send Payment Proof</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,106 +102,53 @@
                                             <small style="font-size:10px !important;" class="label label-success">{{ $paper->created_at ? $paper->created_at->diffForHumans() : '-' }}</small>
                                             <small style="font-size:10px !important;" class="label label-info">{{ \Carbon\Carbon::parse($paper->created_at)->format('j F Y H:i') }}</small> <br>
                                         </td>
-                                        <td>
-                                            @if($paper->file_paper == "" || $paper->file_paper == null)
-                                                <form action="{{ route('presenter.paper.paper.upload',[$paper->id]) }}" method="post" enctype="multipart/form-data">
-                                                    {{ csrf_field() }} {{ method_field("POST") }}
-                                                    @if ($paper->status_file == "pending")
-                                                        <input type="file" name="file_paper" class="form-control">
-                                                    @endif
-                                                    <div class="mt-1">
-                                                        @if ($errors->has('file_paper'))
-                                                            <small class="form-text text-danger">{{ $errors->first('file_paper') }}</small>
-                                                        @endif
-                                                    </div>
-                                                    <hr style="margin:5px !important;">
-                                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i>&nbsp; Upload File Paper</button>
-                                                </form>
+                                        <td style="text-align: center">
+                                            @if ($paper->proof_of_payment != null || $paper->proof_of_payment != "")
+                                                <small class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</small> <br>
+                                                <small>
+                                                    <a  href="{{ asset('upload/proof_of_payment/'.$paper->proof_of_payment) }}" download="{{ $paper->proof_of_payment }}"><i class="fa fa-download"></i>&nbsp; Download</a>
+                                                </small>
                                             @else
-                                                <form action="{{ route('presenter.paper.paper.ubahupload',[$paper->id]) }}" method="post" enctype="multipart/form-data">
-                                                    {{ csrf_field() }} {{ method_field("PATCH") }}
-                                                    <small class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</small> <br>
-                                                    <small>
-                                                        <a  href="{{ asset('upload/file_paper/'.$paper->file_paper) }}" download="{{ $paper->file_paper }}"><i class="fa fa-download"></i>&nbsp; Download file here</a>
-                                                    </small>
-                                                    @if ($paper->status_file == "pending")
-                                                        <hr style="margin:5px !important;">
-                                                        <input type="file" name="file_paper" class="form-control">
-                                                        <div class="mt-1">
-                                                            @if ($errors->has('file_paper'))
-                                                                <small class="form-text text-danger">{{ $errors->first('file_paper') }}</small>
-                                                            @endif
-                                                        </div>
-                                                        <hr style="margin:5px !important;">
-                                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i>&nbsp; Change Paper File</button>
-                                                    @endif
-                                                </form>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($paper->file_paper == "" || $paper->file_paper == null)
-                                                <small class="label label-danger">please upload the paper file first</small>
-                                            @else
-                                                @if($paper->file_presentasi == "" || $paper->file_presentasi == null)
-                                                    <form action="{{ route('presenter.paper.presentasi.upload',[$paper->id]) }}" method="post" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} {{ method_field("PATCH") }}
-                                                        @if ($paper->status_file == "pending")
-                                                            <input type="file" name="file_presentasi" class="form-control">
-                                                        @endif
-                                                        <div class="mt-1">
-                                                            @if ($errors->has('file_presentasi'))
-                                                                <small class="form-text text-danger">{{ $errors->first('file_presentasi') }}</small>
-                                                            @endif
-                                                        </div>
-                                                        <hr style="margin:5px !important;">
-                                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i>&nbsp; Upload Presentation File</button>
-                                                    </form>
-                                                @else
-                                                    <form action="{{ route('presenter.paper.presentasi.ubahupload',[$paper->id]) }}" method="post" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} {{ method_field("PATCH") }}
-                                                        <small class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</small> <br>
-                                                        <small>
-                                                            <a  href="{{ asset('upload/file_presentasi/'.$paper->file_presentasi) }}" download="{{ $paper->file_presentasi }}"><i class="fa fa-download"></i>&nbsp; Download file here</a>
-                                                        </small>
-                                                        @if ($paper->status_file == "pending")
-                                                            <hr style="margin:5px !important;">
-                                                            <input type="file" name="file_presentasi" class="form-control">
-                                                            <hr style="margin:5px !important;">
-                                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i>&nbsp; Change Presentation File</button>
-                                                        @endif
-                                                    </form>
+                                                @if ($paper->status == "disetujui")
+                                                    <a onclick="kirimBukti({{ $paper->id }})" class="btn btn-success btn-sm"><i class="fa fa-paper-plane"></i>&nbsp; Send</a>
+                                                    @elseif($paper->status == "pending")
+                                                    <label class="label label-danger" for="">Please send your abstract first</label>
+                                                    @elseif($paper->status == "diteruskan")
+                                                    <label class="label label-warning" for="">your abstract has not been verified</label>
+                                                    @else
+                                                    <label class="label label-danger" for="">-</label>
                                                 @endif
                                             @endif
                                         </td>
 
-                                        <td>
-                                            @if ($paper->status_file == "dikirim")
+                                        <td style="text-align:center">
+                                            @if ($paper->status_payment == "dikirim")
                                                 <small class="label label-info" style="color:white;"><i class="fa fa-info-circle" style="padding:5px;"></i>&nbsp;Sent</small>
-                                            @elseif ($paper->status_file == "disetujui")
+                                            @elseif ($paper->status_payment == "disetujui")
                                                 <small class="label label-success" style="color:white;"><i class="fa fa-check-ciecle" style="padding:5px;"></i>&nbsp;Accepted</small>
-                                            @else
+                                            @elseif ($paper->status_payment == "ditolak")
+                                                <small class="label label-danger" style="color:white;"><i class="fa fa-close" style="padding:5px;"></i>&nbsp;Rejected</small>
+                                                @elseif ($paper->status_payment == "pending")
                                                 <small class="label label-warning" style="color:white;"><i class="fa fa-clock-o" style="padding:5px;"></i>&nbsp;Pending</small>
+                                            @else
+                                                <small class="label label-danger" style="color:white;">- </small>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($paper->file_presentasi == "" || $paper->file_presentasi == null)
-                                                <button class="btn btn-primary btn-sm" disabled style="color:white; cursor:pointer;"><i class="fa fa-arrow-right"></i>&nbsp; Send</button>
-                                            @else
-                                                @if ($paper->status_file == "disetujui" || $paper->status_file == "dikirim")
-                                                    <button class="btn btn-primary btn-sm" disabled style="color:white; cursor:pointer;"><i class="fa fa-arrow-right"></i>&nbsp; Send</button>
+
+                                        <td style="text-align:center">
+                                            @if ($paper->status_payment == "pending" )
+                                                <form action="{{ route('presenter.abstrak.payment_usulkan',[$paper->id])}}" method="POST">
+                                                    {{ csrf_field() }} {{ method_field('PATCH') }}
+                                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i>&nbsp; Send</button>
+                                                </form>
+                                                @elseif ($paper->status_payment == "disetujui" )
+                                                <small class="label label-success">
+                                                    <i class="fa fa-check-circle"></i>&nbsp; Approved
+                                                </small>
                                                 @else
-                                                    <form action="{{ route('presenter.paper.presentasi.change_status',[$paper->id]) }}" method="post" enctype="multipart/form-data">
-                                                        {{ csrf_field() }} {{ method_field("PATCH") }}
-                                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i>&nbsp; Send</button>
-                                                    </form>
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($paper->komentar_revisi == "" || $paper->komentar_revisi == null)
-                                                <small class="label label-danger">-</small>
-                                            @else
-                                            {{ $paper->komentar_revisi }}
+                                                <small class="label label-primary">
+                                                    <i class="fa fa-info-circle"></i>&nbsp; Sent
+                                                </small>
                                             @endif
                                         </td>
                                     </tr>
@@ -217,7 +162,7 @@
                                     <form action="{{ route('presenter.abstrak.bukti_pembayaran') }}" method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }} {{ method_field('PATCH') }}
                                         <div class="modal-header">
-                                            <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-trash"></i>&nbsp;Confirmation Form To Delete
+                                            <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-trash"></i>&nbsp;Confirmation Form To Send Proof Of Payment
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -228,7 +173,7 @@
                                                 <div class="form-group col-md-12">
                                                     <input type="hidden" name="id_kirim" id="id_kirim">
                                                     <label for="">Upload Bukti Pembayaran</label>
-                                                    <input type="file" name="bukti_pembayaran" class="form-control" required>
+                                                    <input type="file" name="proof_of_payment" class="form-control" required>
                                                 </div>
                                             </div>
                                         </div>

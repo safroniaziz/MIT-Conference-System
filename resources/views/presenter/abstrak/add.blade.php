@@ -13,10 +13,10 @@
 @endsection
 @section('content-title')
     Dashboard
-    <small>MIT Conference System</small>
+    <small>{{ $setting->nama_app }}</small>
 @endsection
 @section('page')
-    <li><a href="#"><i class="fa fa-home"></i> MIT Conference System</a></li>
+    <li><a href="#"><i class="fa fa-home"></i> {{ $setting->nama_app }}</a></li>
     <li class="active">Dashboard</li>
 @endsection
 @section('sidebar-menu')

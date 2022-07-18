@@ -1,3 +1,6 @@
+@php
+    use App\Models\Abstrak;
+@endphp
 @extends('layouts.layout')
 @section('location','Dashboard')
 @section('location2')
@@ -13,10 +16,10 @@
 @endsection
 @section('content-title')
     Dashboard
-    <small>MIT Conference System</small>
+    <small>{{ $setting->nama_app }}</small>
 @endsection
 @section('page')
-    <li><a href="#"><i class="fa fa-home"></i> MIT Conference System</a></li>
+    <li><a href="#"><i class="fa fa-home"></i> {{ $setting->nama_app }}</a></li>
     <li class="active">Dashboard</li>
 @endsection
 @section('sidebar-menu')
@@ -66,47 +69,83 @@
                     <div class="col-xs-12 col-md-6">
                         <p class="lead">Payment Methods:</p>
                         <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                            Please make a payment transfer via BSI bank with account number
+                            Please make a payment transfer via <strong>{{ $setting->bank }}</strong> bank with account number <strong>{{ $setting->norek }}</strong>
                         </p>
                     </div>
 
                     <div class="col-xs-12 col-md-6">
-                        <p class="lead">Amount Due 2/22/2014</p>
+                        <p class="lead">Amount Due {{ $setting->terakhir_transfer }}</p>
                         <div class="table-responsive">
                             <table class="table table-hover" style="margin-bottom:10px !important;">
                                 <tr>
-                                    <th style="width:50%">Subtotal:</th>
-                                    <td>$250.30</td>
-                                </tr>
-                                <tr>
-                                    <th>Tax (9.3%)</th>
-                                    <td>$10.34</td>
-                                </tr>
-                                <tr>
-                                    <th>Total:</th>
-                                    <td>$265.24</td>
+                                    <th style="width:50%">Total:</th>
+                                    <td>Rp. {{ number_format($setting->biaya_participant) }}.00</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <hr style="border:1px solid #f4f4f4">
+                        @php
+                            $status = Abstrak::where('user_id',Auth::user()->id)->first();
+                        @endphp
+                        <hr style="border:1px solid #f4f4f4;margin:5px !important;">
                         <div class="row">
-                            <form action="" method="post" enctype="multipart/form-data">
+                            @if ($status->status_payment == "pending")
+                                <form action="{{ route('participant.payment.update',[$status->id]) }}" method="post" enctype="multipart/form-data">
+                                {{ csrf_field() }} {{ method_field('PATCH') }}
+                            @else
+                                <form action="{{ route('participant.payment.send') }}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }} {{ method_field('POST') }}
-                                <div class="form-group col-md-6">
-                                    <label for="">Total Transfer</label>
-                                    <input type="number" name="total" class="form-control">
-                                </div>
+                            @endif
 
-                                <div class="form-group col-md-6">
-                                    <label for="">select the proof of payment file</label>
-                                    <input type="file" name="proof_of_payment" class="form-control">
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-credit-card"></i> Submit Proof Of Payment
-                                    </button>
-                                </div>
+
+                                @if (count((array)$status)>0)
+                                    @if ($status->status_payment == "dikirim")
+                                        <div class="form-group col-md-6">
+                                            <small class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</small> <br>
+                                            <small>
+                                                <a  href="{{ asset('upload/proof_of_payment/'.$status->proof_of_payment) }}" download="{{ $status->proof_of_payment }}"><i class="fa fa-download"></i>&nbsp; Download file here</a>
+                                            </small> <br>
+                                            <label for="">select the proof of payment file</label>
+                                            <input type="file" name="proof_of_payment" disabled class="form-control">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-success" disabled><i class="fa fa-credit-card"></i> Submit Proof Of Payment
+                                            </button>
+                                        </div>
+                                        @elseif ($status->status_payment == "disetujui")
+                                        <div class="form-group col-md-6">
+                                            <small class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Approved</small> <br>
+                                            <small>
+                                                <a  href="{{ asset('upload/proof_of_payment/'.$status->proof_of_payment) }}" download="{{ $status->proof_of_payment }}"><i class="fa fa-download"></i>&nbsp; Download file here</a>
+                                            </small> <br>
+                                            <label for="">select the proof of payment file</label>
+                                            <input type="file" name="proof_of_payment" disabled class="form-control">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-success" disabled><i class="fa fa-credit-card"></i> Submit Proof Of Payment
+                                            </button>
+                                        </div>
+                                        @elseif ($status->status_payment == "pending")
+                                        <div class="form-group col-md-6">
+                                            <label for="">select the proof of payment file</label>
+                                            <input type="file" name="proof_of_payment" class="form-control">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-success"><i class="fa fa-credit-card"></i> Submit Proof Of Payment
+                                            </button>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="form-group col-md-6">
+                                        <label for="">select the proof of payment file</label>
+                                        <input type="file" name="proof_of_payment" class="form-control">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-credit-card"></i> Submit Proof Of Payment
+                                        </button>
+                                    </div>
+                                @endif
                             </form>
                         </div>
                     </div>

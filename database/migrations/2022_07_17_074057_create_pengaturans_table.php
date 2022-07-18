@@ -22,6 +22,8 @@ class CreatePengaturansTable extends Migration
             $table->string('biaya_presenter')->nullable();
             $table->string('biaya_participant')->nullable();
             $table->string('persentase_pajak')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('norek')->nullable();
             $table->timestamps();
         });
     }

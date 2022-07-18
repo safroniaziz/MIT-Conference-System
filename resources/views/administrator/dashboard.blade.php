@@ -13,10 +13,10 @@
 @endsection
 @section('content-title')
     Dashboard
-    <small>MIT Conference System</small>
+    <small>{{ $setting->nama_app }}</small>
 @endsection
 @section('page')
-    <li><a href="#"><i class="fa fa-home"></i> MIT Conference System</a></li>
+    <li><a href="#"><i class="fa fa-home"></i> {{ $setting->nama_app }}</a></li>
     <li class="active">Dashboard</li>
 @endsection
 @section('sidebar-menu')
@@ -58,7 +58,7 @@
         <h4>Welcome, <b>{{ Auth::user()->full_name }}</b></h4>
 
         <p>
-            Aplikasi MIT Conference System  adalah aplikasi yang digunakan untuk melakukan pendaftaran conference nasional maupun internasional
+            {{ $setting->keterangan_app }}
             <br>
             <i><b>Note</b>: For security, don't forget to logout after using the app</i>
         </p>
@@ -141,7 +141,7 @@
                 <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Presenter Price</span>
-                    <span class="info-box-number">13,s</span>
+                    <span class="info-box-number">Rp. {{ number_format($setting->biaya_presenter) }},00</span>
                 </div>
             </div>
         </div>
@@ -151,7 +151,7 @@
                 <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Participant Price</span>
-                    <span class="info-box-number">93,139</span>
+                    <span class="info-box-number">Rp. {{ number_format($setting->biaya_participant) }},00</span>
                 </div>
             </div>
         </div>

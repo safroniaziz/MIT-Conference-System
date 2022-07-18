@@ -13,10 +13,10 @@
 @endsection
 @section('content-title')
     SETTINGS
-    <small>MIT Conference System</small>
+    <small>{{ $setting->nama_app }}</small>
 @endsection
 @section('page')
-    <li><a href="#"><i class="fa fa-home"></i> MIT Conference System</a></li>
+    <li><a href="#"><i class="fa fa-home"></i> {{ $setting->nama_app }}</a></li>
     <li class="active">Settings</li>
 @endsection
 @section('sidebar-menu')
@@ -60,41 +60,114 @@
                 <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-history"></i>&nbsp;Application Settings</h3>
                 </div>
-                <div class="box-body">
-                    <div class="row">
-                        <form role="form" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <form role="form" action="{{ route('administrator.settings.update',[$setting->id]) }}" method="post" enctype="multipart/form-data">
+                        <div class="box-body">
                             {{ csrf_field() }} {{ method_field('PATCH') }}
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Application Name</label>
-                                <input type="text" value="{{ $setting->nama_app }}" class="form-control">
+                                <input type="text" name="nama_app" value="{{ $setting->keterangan_app }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('nama_app'))
+                                        <small class="form-text text-danger">{{ $errors->first('nama_app') }}</small>
+                                    @endif
+                                </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Appplication Short Name</label>
-                                <input type="text" value="{{ $setting->singkatan }}" class="form-control">
+                                <input type="text" name="singkatan" value="{{ $setting->singkatan }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('singkatan'))
+                                        <small class="form-text text-danger">{{ $errors->first('singkatan') }}</small>
+                                    @endif
+                                </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Application Description</label>
-                                <input type="text" value="{{ $setting->keterangan_app }}" class="form-control">
+                                <input type="text" name="keterangan_app" value="{{ $setting->keterangan_app }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('keterangan_app'))
+                                        <small class="form-text text-danger">{{ $errors->first('keterangan_app') }}</small>
+                                    @endif
+                                </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Presenter Price</label>
-                                <input type="text" value="{{ $setting->biaya_presenter }}" class="form-control">
+                                <input type="text" name="biaya_presenter" value="{{ $setting->biaya_presenter }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('biaya_presenter'))
+                                        <small class="form-text text-danger">{{ $errors->first('biaya_presenter') }}</small>
+                                    @endif
+                                </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Participant Price</label>
-                                <input type="text" value="{{ $setting->biaya_participant }}" class="form-control">
+                                <input type="text" name="biaya_participant" value="{{ $setting->biaya_participant }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('biaya_participant'))
+                                        <small class="form-text text-danger">{{ $errors->first('biaya_participant') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">Destination Bank Name</label>
+                                <input type="text" name="bank" value="{{ $setting->bank }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('bank'))
+                                        <small class="form-text text-danger">{{ $errors->first('bank') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">Bank Account Number</label>
+                                <input type="text" name="norek" value="{{ $setting->norek }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('norek'))
+                                        <small class="form-text text-danger">{{ $errors->first('norek') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">Payment Deadline</label>
+                                <input type="date" name="terakhir_transfer" value="{{ $setting->terakhir_transfer }}" class="form-control">
+                                <div>
+                                    @if ($errors->has('terakhir_transfer'))
+                                        <small class="form-text text-danger">{{ $errors->first('terakhir_transfer') }}</small>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="exampleInputFile">Application Logo</label>
-                                <input type="file" id="exampleInputFile" class="form-control">
+                                <input type="file" name="logo" id="exampleInputFile" class="form-control">
+                                <div>
+                                    @if ($errors->has('logo'))
+                                        <small class="form-text text-danger">{{ $errors->first('logo') }}</small>
+                                    @endif
+                                </div>
                             </div>
 
-                            <div class="box-footer">
+                            @if ($setting->logo_app == null || $setting->logo_app == "")
+                                <div class="form-group col-md-6">
+                                    <label for="exampleInputFile">Application Logo</label>
+                                    <img src="{{ asset('assets/images/logo.png') }}" width="100" class="img-responsive"alt="">
+                                </div>
+                            @else
+                                <div class="form-group col-md-6">
+                                    <label for="exampleInputFile">Application Logo</label>
+                                    <img src="{{ asset('upload/aplication_logo/'.$setting->logo_app) }}" width="100" class="img-responsive"alt="">
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-12">
+                            <div class="box-footer ">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i>&nbsp; Update Settings</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

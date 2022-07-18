@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('location','Dashboard')
 @section('location2')
-    <i class="fa fa-home"></i>&nbsp;Manajemen Abstrak
+    <i class="fa fa-home"></i>&nbsp;All Abstract List
 @endsection
 @section('user-login')
     @if (Auth::check())
@@ -9,7 +9,7 @@
     @endif
 @endsection
 @section('halaman')
-    Presenter
+    Administrator
 @endsection
 @section('content-title')
     Dashboard
@@ -17,10 +17,10 @@
 @endsection
 @section('page')
     <li><a href="#"><i class="fa fa-home"></i> {{ $setting->nama_app }}</a></li>
-    <li class="active">Dashboard</li>
+    <li class="active">All Abstract List</li>
 @endsection
 @section('sidebar-menu')
-    @include('presenter/sidebar')
+    @include('administrator/sidebar')
 @endsection
 @section('user')
     <!-- User Account Menu -->
@@ -43,11 +43,11 @@
     </li>
 @endsection
 @push('styles')
-    <style>
-        #chartdiv {
-            width: 90%;
-            height: 500px;
-        }
+<style>
+    #chartdiv, #chartdiv2, #chartdiv3, #chartdiv4 {
+      width: 100%;
+      height: 350px;
+    }
     </style>
     <style>
         .preloader {    position: fixed;    top: 0;    left: 0;    right: 0;    bottom: 0;    background-color: #ffffff;    z-index: 99999;    height: 100%;    width: 100%;    overflow: hidden !important;}.do-loader{    width: 200px;    height: 200px;    position: absolute;    left: 50%;    top: 50%;    margin: 0 auto;    -webkit-border-radius: 100%;       -moz-border-radius: 100%;         -o-border-radius: 100%;            border-radius: 100%;    background-image: url({{ asset('assets/images/logo.png') }});    background-size: 80% !important;    background-repeat: no-repeat;    background-position: center;    -webkit-background-size: cover;            background-size: cover;    -webkit-transform: translate(-50%,-50%);       -moz-transform: translate(-50%,-50%);        -ms-transform: translate(-50%,-50%);         -o-transform: translate(-50%,-50%);            transform: translate(-50%,-50%);}.do-loader:before {    content: "";    display: block;    position: absolute;    left: -6px;    top: -6px;    height: calc(100% + 12px);    width: calc(100% + 12px);    border-top: 1px solid #07A8D8;    border-left: 1px solid transparent;    border-bottom: 1px solid transparent;    border-right: 1px solid transparent;    border-radius: 100%;    -webkit-animation: spinning 0.750s infinite linear;       -moz-animation: spinning 0.750s infinite linear;         -o-animation: spinning 0.750s infinite linear;            animation: spinning 0.750s infinite linear;}@-webkit-keyframes spinning {   from {-webkit-transform: rotate(0deg);}   to {-webkit-transform: rotate(359deg);}}@-moz-keyframes spinning {   from {-moz-transform: rotate(0deg);}   to {-moz-transform: rotate(359deg);}}@-o-keyframes spinning {   from {-o-transform: rotate(0deg);}   to {-o-transform: rotate(359deg);}}@keyframes spinning {   from {transform: rotate(0deg);}   to {transform: rotate(359deg);}}
@@ -55,13 +55,57 @@
 @endpush
 @section('content')
 <div class="row">
+    <div class="col-md-6">
+        <div class="box box-info">
+            <div class="box-header with-border">
+            <h3 class="box-title">
+                <i class="fa fa-pie-chart"></i>&nbsp;Abstract Data Statistics Per Status (Pie Chart)
+            </h3>
+            </div>
+            <div class="box-body">
+                @section('charts')
+                    chart.data = [
+                        @foreach ($subyek as $data)
+                            {
+                                    "country": "{{ $data['status'] }}",
+                                "litres": {{ $data['jumlah'] }}
+                            },
+                        @endforeach
+                    ];
+                @endsection
+                <div id="chartdiv"></div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-info">
+            <div class="box-header with-border">
+            <h3 class="box-title">
+                <i class="fa fa-bar-chart"></i>&nbsp;Abstract Data Statistics Per Status (Bar Chart)
+            </div>
+            <div class="box-body">
+                @section('charts2')
+                    chart.data = [
+                        @foreach ($subyek as $data)
+                            {
+                                    "country": "{{ $data['status'] }}",
+                                "visits": {{ $data['jumlah'] }}
+                            },
+                        @endforeach
+                    ];
+                @endsection
+                <div id="chartdiv2"></div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-book"></i>&nbsp;Abstract Data Management</h3>
-                <div class="pull-right">
-                    <a href="{{ route('presenter.abstrak.add') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>&nbsp; Create New Abstract</a>
-                </div>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -88,9 +132,6 @@
                                     <th>Abstract Text</th>
                                     <th style="text-align:center">Abstract File</th>
                                     <th style="text-align:center">Abstract Status</th>
-                                    <th style="text-align:center">Send Abstract</th>
-                                    <th style="text-align:center">Proof Of Payment</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,9 +146,9 @@
                                             <a href="{{ route('presenter.abstrak.detail',[$abstrak->id]) }}" id="selengkapnya">read more</a>
                                             <br>
                                             <hr style="margin-bottom:5px !important; margin-top:5px !important;">
+                                            <small style="font-size:10px !important; text-transform:capitalize;" class="label label-info">{{ $abstrak->full_name }}</small>
                                             <small style="font-size:10px !important; text-transform:capitalize;" class="label label-primary">{{ $abstrak->tahun_usulan }}</small>
                                             <small style="font-size:10px !important;" class="label label-success">{{ $abstrak->created_at ? $abstrak->created_at->diffForHumans() : '-' }}</small>
-                                            <small style="font-size:10px !important;" class="label label-info">{{ \Carbon\Carbon::parse($abstrak->created_at)->format('j F Y H:i') }}</small> <br>
                                         </td>
                                         <td style="width:25%">
                                             {!! $abstrak->shortAbstrak !!}
@@ -125,43 +166,6 @@
                                                 <small class="label label-success" style="color:white;"><i class="fa fa-clock-o" style="padding:5px;"></i>&nbsp;Approved</small>
                                                 @elseif($abstrak->status == "ditolak")
                                                 <small class="label label-danger" style="color:white;"><i class="fa fa-close" style="padding:5px;"></i>&nbsp;Rejected</small>
-                                            @endif
-                                        </td>
-                                        <td style="text-align:center">
-                                            @if ($abstrak->status == "pending" && $abstrak->status_file == "pending")
-                                                <form action="{{ route('presenter.abstrak.usulkan',[$abstrak->id])}}" method="POST">
-                                                    {{ csrf_field() }} {{ method_field('PATCH') }}
-                                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i>&nbsp; Submit abstract</button>
-                                                </form>
-                                                @else
-                                                <small class="label label-success">
-                                                    <i class="fa fa-check-circle"></i>&nbsp; Sent
-                                                </small>
-                                            @endif
-                                        </td>
-                                        <td style="text-align: center">
-                                            @if ($abstrak->proof_of_payment != null || $abstrak->proof_of_payment != "")
-                                                <small class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</small> <br>
-                                                <small>
-                                                    <a  href="{{ asset('upload/proof_of_payment/'.$abstrak->proof_of_payment) }}" download="{{ $abstrak->proof_of_payment }}"><i class="fa fa-download"></i>&nbsp; Download</a>
-                                                </small>
-
-                                            @else
-                                                @if ($abstrak->status_payment == "disetujui")
-                                                    <a onclick="kirimBukti({{ $abstrak->id }})" class="btn btn-success btn-sm"><i class="fa fa-paper-plane"></i>&nbsp; Send</a>
-                                                    @elseif ($abstrak->status_payment == "pending")
-                                                    <a onclick="kirimBukti({{ $abstrak->id }})" class="btn btn-warning btn-sm"><i class="fa fa-clock-o"></i>&nbsp; Pending</a>
-                                                    <label class="label label-danger" for="">-</label>
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td style="text-align:center">
-                                            @if ($abstrak->status != "pending")
-                                                <button class="btn btn-primary btn-sm" disabled style="color:white; cursor:not-allowed;"><i class="fa fa-edit"></i>&nbsp; Edit</button>
-                                                <button class="btn btn-danger btn-sm" disabled style="color:white; cursor:not-allowed;"><i class="fa fa-trash"></i>&nbsp; Delete</button>
-                                                @else
-                                                <a href="{{ route('presenter.abstrak.edit',[$abstrak->id]) }}" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-edit"></i>&nbsp; Edit</a>
-                                                <a onclick="hapusAbstrak({{ $abstrak->id }})" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i>&nbsp; Delete</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -205,6 +209,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
              <!-- Modal Hapus-->
             <div class="modal fade modal-danger" id="modaldelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -246,38 +251,80 @@
                 responsive : true,
             });
         } );
-
-        function hapusAbstrak(id){
-            $('#modaldelete').modal('show');
-            $('#id_hapus').val(id);
-        }
-
-        $(document).on('change','#visibility',function(){
-            var visibility = $(this).val();
-            // alert(visibility);
-            // alert(visibility);
-            var div = $(this).parent().parent();
-
-            var op=" ";
-            $.ajax({
-            type :'get',
-            url: "{{ url('teacher/topics/update_visibility') }}",
-            data:{'visibility':visibility},
-                success:function(data){
-
-                },
-                    error:function(){
-                }
-            });
-        });
-
-        function kirimBukti(id){
-            $('#modalKirimBukti').modal('show');
-            $('#id_kirim').val(id);
-        }
-
-        @if($errors->any())
-            $('#modalKirimBukti').modal('show');
-        @endif
     </script>
+
+@push('scripts')
+<!-- Resources -->
+<script src="{{ asset('assets/offline/core.js') }}"></script>
+<script src="{{ asset('assets/offline/chart.js') }}"></script>
+<script src="{{ asset('assets/offline/animated.js') }}"></script>
+
+<!-- Chart code -->
+<script>
+    am4core.ready(function() {
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.PieChart);
+    // Add data
+    @yield('charts')
+    // Add and configure Series
+    var pieSeries = chart.series.push(new am4charts.PieSeries());
+    pieSeries.dataFields.value = "litres";
+    pieSeries.dataFields.category = "country";
+    pieSeries.slices.template.stroke = am4core.color("#fff");
+    pieSeries.slices.template.strokeWidth = 2;
+    pieSeries.slices.template.strokeOpacity = 1;
+    // This creates initial animation
+    pieSeries.hiddenState.properties.opacity = 1;
+    pieSeries.hiddenState.properties.endAngle = -90;
+    pieSeries.hiddenState.properties.startAngle = -90;
+    }); // end am4core.ready()
+</script>
+
+
+
+
+<!-- Resources -->
+<script src="{{ asset('assets/offline/cdn/core.js') }}"></script>
+<script src="{{ asset('assets/offline/cdn/charts.js') }}"></script>
+<script src="{{ asset('assets/offline/cdn/animated.js') }}"></script>
+
+<!-- Chart code -->
+<script>
+am4core.ready(function() {
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+// Create chart instance
+var chart = am4core.create("chartdiv2", am4charts.XYChart);
+// Add data
+@yield('charts2')
+// Create axes
+var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "country";
+categoryAxis.renderer.grid.template.location = 0;
+categoryAxis.renderer.minGridDistance = 30;
+categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
+if (target.dataItem && target.dataItem.index & 2 == 2) {
+return dy + 25;
+}
+return dy;
+});
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+// Create series
+var series = chart.series.push(new am4charts.ColumnSeries());
+series.dataFields.valueY = "visits";
+series.dataFields.categoryX = "country";
+series.name = "Visits";
+series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+series.columns.template.fillOpacity = .8;
+var columnTemplate = series.columns.template;
+columnTemplate.strokeWidth = 2;
+columnTemplate.strokeOpacity = 1;
+}); // end am4core.ready()
+</script>
+
+
 @endpush

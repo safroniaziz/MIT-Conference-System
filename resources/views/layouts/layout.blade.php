@@ -1,4 +1,6 @@
-
+@php
+    use App\Models\Pengaturan;
+@endphp
 <!DOCTYPE html>
 <html>
 <head>
@@ -132,11 +134,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        MIT Conference Sysem
-        <small>Sistem Informasi Pendaftaran Dan Pendataan Conference Nasional & Internasional</small>
+        @php
+            $setting = Pengaturan::where('id',1)->first();
+        @endphp
+        {{ $setting->nama_app }}
+        <small>{{ $setting->keterangan_app }}</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> MIT Conference System</a></li>
+        <li><a href="#"><i class="fa fa-home"></i> {{ $setting->nama_app }}</a></li>
         <li class="active">@yield('location2')</li>
       </ol>
     </section>

@@ -9,7 +9,7 @@ class Abstrak extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'judul','abstrak','file_abstrak','status','tahun_usulan','user_id','proof_of_payment'
+        'judul','abstrak','file_abstrak','status','tahun_usulan','user_id','proof_of_payment','status_file'
     ];
 
     public function getShortAbstrakAttribute(){
