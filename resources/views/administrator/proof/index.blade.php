@@ -69,7 +69,7 @@
                     chart.data = [
                         @foreach ($subyek as $data)
                             {
-                                    "country": "{{ $data['status'] }}",
+                                    "country": "{{ $data['status_payment'] }}",
                                 "litres": {{ $data['jumlah'] }}
                             },
                         @endforeach
@@ -107,6 +107,46 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-check"></i>&nbsp;Payment Amount</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12 table-responsive">
+                        <table class="table table-striped table-hover" style="width:100%;">
+                            <tr>
+                                <th style="text-align:center">Number Of User</th>
+                                <th style="text-align:center">Payment Amount</th>
+                                <th style="text-align:center">Total</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">Participant : {{ $par }}</td>
+                                <td style="text-align:center">Rp. {{ number_format($setting->biaya_participant) }}.00</td>
+                                <td style="text-align:center">Rp. {{ number_format($par * $setting->biaya_participant) }}.00</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center">Presenter : {{ $pre }}</td>
+                                <td style="text-align:center">Rp. {{ number_format($setting->biaya_presenter) }}.00</td>
+                                <td style="text-align:center">Rp. {{ number_format($pre * $setting->biaya_presenter) }}.00</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="text-align:center">
+                                    Total
+                                </th>
+                                <th style="text-align:center">
+                                    Rp. {{ number_format(($pre * $setting->biaya_presenter) + $par * $setting->biaya_participant) }}.00
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-book"></i>&nbsp;All Payment Proof List</h3>
             </div>
             <div class="box-body">
@@ -126,7 +166,7 @@
                         @endif
                     </div>
                     <div class="col-md-12 table-responsive">
-                        <table class="table table-striped table-bordered" id="table" style="width:100%;">
+                        <table class="table table-striped" id="table" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -165,8 +205,8 @@
                 </div>
             </div>
         </div>
-
-    </section>
+    </div>
+</div>
 @endsection
 @push('scripts')
 <!-- Resources -->
@@ -175,7 +215,13 @@
 <script src="{{ asset('assets/offline/animated.js') }}"></script>
 
 <!-- Chart code -->
+
 <script>
+    $(document).ready(function() {
+            $('#table').DataTable({
+                responsive : true,
+            });
+        } );
     am4core.ready(function() {
     // Themes begin
     am4core.useTheme(am4themes_animated);

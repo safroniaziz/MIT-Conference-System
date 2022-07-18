@@ -25,11 +25,15 @@ class AllPaymentController extends Controller
         $subyek2 = Abstrak::join('users','users.id','abstraks.user_id')
                             ->select(DB::raw('count(abstraks.id) as jumlah'), 'access')
                             ->groupBy('access')->get();
+        $par = count(Abstrak::join('users','users.id','abstraks.user_id')->where('access','participant')->where('status_payment','disetujui')->get());
+        $pre = count(Abstrak::join('users','users.id','abstraks.user_id')->where('access','presenter')->where('status_payment','disetujui')->get());
         return view('administrator/proof.index',[
             'abstraks'  => $abstraks,
             'setting'  => $setting,
             'subyek'  => $subyek,
             'subyek2'  => $subyek2,
+            'par'  => $par,
+            'pre'  => $pre,
         ]);
     }
 
