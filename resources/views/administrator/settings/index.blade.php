@@ -91,7 +91,7 @@
                             </div>
 
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i>&nbsp; Update Settings</button>
                             </div>
                         </form>
                     </div>
